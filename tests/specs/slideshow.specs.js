@@ -2,7 +2,7 @@ describe("SlideShows", function () {
     var slideshow = {};
 
     beforeEach(function () {
-        slideshow = new TrellBan.Visualize.SlideShow();
+        slideshow = new Fluxo.Visualize.SlideShow();
     });
 
     describe("A new slideshow", function () {

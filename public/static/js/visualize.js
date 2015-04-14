@@ -1,5 +1,5 @@
-var TrellBan = TrellBan || {};
-TrellBan.Visualize = TrellBan.Visualize || {};
+var Fluxo = Fluxo || {};
+Fluxo.Visualize = Fluxo.Visualize || {};
 
 var slideshow = {};
 
@@ -386,10 +386,10 @@ var onAuthorize = function () {
 
 $(document).ready(function () {
     initDarkChartTheme();
-    slideshow = new TrellBan.Visualize.SlideShow();
+    slideshow = new Fluxo.Visualize.SlideShow();
     Trello.authorize({
         type: "popup",
-        name: "TrellBan",
+        name: "Fluxo",
         expiration: "never",
         success: onAuthorize
     });

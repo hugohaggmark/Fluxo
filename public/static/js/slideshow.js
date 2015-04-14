@@ -1,7 +1,7 @@
-var TrellBan = TrellBan || {};
-TrellBan.Visualize = TrellBan.Visualize || {};
+var Fluxo = Fluxo || {};
+Fluxo.Visualize = Fluxo.Visualize || {};
 
-TrellBan.Visualize.SlideShow = function () {
+Fluxo.Visualize.SlideShow = function () {
     'use strict';
     var slidesArray = [];
     var currentSlide = 0;

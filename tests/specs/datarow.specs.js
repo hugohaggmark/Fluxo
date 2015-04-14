@@ -7,7 +7,7 @@ describe("DataRows", function () {
         var actionResults = [];
 
         beforeEach(function () {
-            datarow = new TrellBan.Visualize.DataRow(label, card, actionResults);
+            datarow = new Fluxo.Visualize.DataRow(label, card, actionResults);
         });
 
         it("Should be created", function () {
@@ -39,7 +39,7 @@ describe("DataRows", function () {
         }];
 
         beforeEach(function () {
-            datarow = new TrellBan.Visualize.DataRow(label, card, actionResults);
+            datarow = new Fluxo.Visualize.DataRow(label, card, actionResults);
         });
 
         it("Should have a correct leadTime", function () {

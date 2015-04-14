@@ -1,5 +1,5 @@
 {
-    "name": "TrellBan",
+    "name": "Fluxo",
     "version": "0.0.0",
     "description": "Trello Kanban like statistics ",
     "main": "server.js",

@@ -8,6 +8,6 @@ app.use('/', express.static('public', {
 
 app.use('/static', express.static('static'));
 
-var server = app.listen(appPort, function() {
-    console.log('TrellBan listening at port:%s', appPort);
+var server = app.listen(appPort, function () {
+    console.log('Fluxo listening at port:%s', appPort);
 });

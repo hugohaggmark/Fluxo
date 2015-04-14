@@ -15,8 +15,8 @@ var step3Label = $("#step3-label");
 var nextStep = $("#nextStep");
 var prevStep = $("#prevStep");
 
-var renderFlow = function() {
-    $.get("static/templates/step3-flow.html", function(template) {
+var renderFlow = function () {
+    $.get("static/templates/step3-flow.html", function (template) {
         var rendered = Mustache.render(template, {
             lists: selected.listNames
         });
@@ -24,15 +24,15 @@ var renderFlow = function() {
     });
 };
 
-var renderStartList = function() {
+var renderStartList = function () {
     var lists = [];
-    $.each(selected.listIds, function(index, id) {
+    $.each(selected.listIds, function (index, id) {
         lists.push({
             id: id,
             name: selected.listNames[index]
         });
     });
-    $.get("static/templates/start-list.html", function(template) {
+    $.get("static/templates/start-list.html", function (template) {
         var rendered = Mustache.render(template, {
             lists: lists
         });
@@ -41,13 +41,13 @@ var renderStartList = function() {
     });
 };
 
-var onBoardClicked = function() {
+var onBoardClicked = function () {
     selected.boardId = this.id;
     if (selected.boardId)
         nextStep.removeClass("disabled");
 };
 
-var onListClicked = function() {
+var onListClicked = function () {
     var index = selected.listIds.indexOf(this.id);
     if (index === -1) {
         selected.listIds.push(this.id);
@@ -65,7 +65,7 @@ var onListClicked = function() {
     //renderStartList();
 };
 
-var onStep = function() {
+var onStep = function () {
     if (currentStep === 2) {
         step1Content.hide();
         step3Content.hide();
@@ -97,7 +97,7 @@ var onStep = function() {
     }
 };
 
-prevStep.click(function() {
+prevStep.click(function () {
     if (currentStep == 1)
         return;
 
@@ -105,7 +105,7 @@ prevStep.click(function() {
     onStep();
 });
 
-nextStep.click(function() {
+nextStep.click(function () {
     if (currentStep == 4)
         return;
 
@@ -113,8 +113,8 @@ nextStep.click(function() {
     onStep();
 });
 
-var onAuthorize = function() {
-    Trello.members.get("me", function(member) {
+var onAuthorize = function () {
+    Trello.members.get("me", function (member) {
         $("#fullName").text(member.fullName);
         authorized = true;
         currentStep++;
@@ -122,7 +122,7 @@ var onAuthorize = function() {
     });
 };
 
-var onAuthorizeFailed = function() {
+var onAuthorizeFailed = function () {
     currentStep = 1;
     authorized = false;
 };
@@ -133,10 +133,10 @@ Trello.authorize({
     error: onAuthorizeFailed
 });
 
-$("#step2").click(function() {
+$("#step2").click(function () {
     console.log('step 2 click');
-    Trello.members.get("my/boards", function(boards) {
-        $.get("static/templates/step2.html", function(template) {
+    Trello.members.get("my/boards", function (boards) {
+        $.get("static/templates/step2.html", function (template) {
             var rendered = Mustache.render(template, {
                 boards: boards
             });
@@ -146,12 +146,12 @@ $("#step2").click(function() {
     });
 });
 
-$("#step3").click(function() {
+$("#step3").click(function () {
     selected.listIds.length = 0;
     selected.listNames.length = 0;
     renderFlow();
-    Trello.get("boards/" + selected.boardId + "/lists", function(lists) {
-        $.get("static/templates/step3.html", function(template) {
+    Trello.get("boards/" + selected.boardId + "/lists", function (lists) {
+        $.get("static/templates/step3.html", function (template) {
             var rendered = Mustache.render(template, {
                 lists: lists
             });
@@ -162,10 +162,10 @@ $("#step3").click(function() {
 });
 
 
-$("#connectLink").click(function() {
+$("#connectLink").click(function () {
     Trello.authorize({
         type: "popup",
-        name: "TrellBan",
+        name: "Fluxo",
         expiration: "30days",
         success: onAuthorize,
         error: onAuthorizeFailed

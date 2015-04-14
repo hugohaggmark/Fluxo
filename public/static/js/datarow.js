@@ -1,7 +1,7 @@
-var TrellBan = TrellBan || {};
-TrellBan.Visualize = TrellBan.Visualize || {};
+var Fluxo = Fluxo || {};
+Fluxo.Visualize = Fluxo.Visualize || {};
 
-TrellBan.Visualize.DataRow = function (label, card, actionResults) {
+Fluxo.Visualize.DataRow = function (label, card, actionResults) {
     'use strict';
     this.label = label;
     this.card = card;

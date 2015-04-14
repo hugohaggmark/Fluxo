@@ -2,7 +2,7 @@ describe("DataRowCollections", function () {
     var datarowCollection = {};
 
     beforeEach(function () {
-        datarowCollection = new TrellBan.Visualize.DataRowCollection();
+        datarowCollection = new Fluxo.Visualize.DataRowCollection();
     });
 
     describe("A empty datarow collection", function () {

@@ -1,7 +1,7 @@
-var TrellBan = TrellBan || {};
-TrellBan.Visualize = TrellBan.Visualize || {};
+var Fluxo = Fluxo || {};
+Fluxo.Visualize = Fluxo.Visualize || {};
 
-TrellBan.Visualize.DataRowCollection = function () {
+Fluxo.Visualize.DataRowCollection = function () {
     'use strict';
     var dataRows = [];
     var labels = [];
@@ -78,7 +78,7 @@ TrellBan.Visualize.DataRowCollection = function () {
     };
 
     this.addDataRow = function (label, card, actionResults) {
-        var dataRow = new TrellBan.Visualize.DataRow(label, card, actionResults);
+        var dataRow = new Fluxo.Visualize.DataRow(label, card, actionResults);
         dataRows.push(dataRow);
     };
 
