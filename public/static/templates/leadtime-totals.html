@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="panel-heading">
+        <p>Leadtimes (calulation made from all cards that reached the last list of your Kanban flow)</p>
+    </div>
+    {{#data}}
+    <div class="col-sm-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{name}}</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="badge">{{average}}</span> Average:
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">{{ceiledDays}}</span> Days:
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge">{{cards}}</span> Cards:
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="badge badge-clear">({{oneDay}})</span><span class="badge badge-success">{{oneDayPercent}}</span> &lt; 1 day:
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge badge-clear">({{oneWeek}})</span><span class="badge badge-info">{{oneWeekPercent}}</span> 1 - 7 days:
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge badge-clear">({{oneMonth}})</span><span class="badge badge-warning">{{oneMonthPercent}}</span> 8 - 30 days:
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge badge-clear">({{overMonth}})</span><span class="badge badge-danger">{{overMonthPercent}}</span> &gt; 30 days:
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-9" id="graph-leadtime">
+
+    </div>
+    {{/data}}
+</div>
