@@ -297,7 +297,7 @@ var renderLeadTime = function () {
 
         slideshow.startSlideShow();
         if (slideshow.visible()) {
-            $("#slideshow-container").toggle();
+            $("#slideshow-controls").toggle();
         }
         $("#next").click(function () {
             slideshow.nextSlide();
