@@ -11,10 +11,10 @@
             <div class="panel-body">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <span class="badge">{{average}}</span> Average:
+                        <span class="badge">{{averageLeadTime}}</span> Average:
                     </li>
                     <li class="list-group-item">
-                        <span class="badge">{{ceiledDays}}</span> Days:
+                        <span class="badge">{{leadTime}}</span> Days:
                     </li>
                     <li class="list-group-item">
                         <span class="badge">{{cards}}</span> Cards:
@@ -22,23 +22,22 @@
                 </ul>
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <span class="badge badge-clear">({{oneDay}})</span><span class="badge badge-success">{{oneDayPercent}}</span> &lt; 1 day:
+                        <span class="badge badge-clear">({{cardsLessThenADay}})</span><span class="badge badge-success">{{percentLessThenADay}}%</span> &lt; 1 day:
                     </li>
                     <li class="list-group-item">
-                        <span class="badge badge-clear">({{oneWeek}})</span><span class="badge badge-info">{{oneWeekPercent}}</span> 1 - 7 days:
+                        <span class="badge badge-clear">({{cardsBetweenOneAndSevenDays}})</span><span class="badge badge-info">{{percentBetweenOneAndSevenDays}}%</span> 1 - 7 days:
                     </li>
                     <li class="list-group-item">
-                        <span class="badge badge-clear">({{oneMonth}})</span><span class="badge badge-warning">{{oneMonthPercent}}</span> 8 - 30 days:
+                        <span class="badge badge-clear">({{cardsBetweenEightAndThirtyDays}})</span><span class="badge badge-warning">{{percentBetweenEightAndThirtyDays}}%</span> 8 - 30 days:
                     </li>
                     <li class="list-group-item">
-                        <span class="badge badge-clear">({{overMonth}})</span><span class="badge badge-danger">{{overMonthPercent}}</span> &gt; 30 days:
+                        <span class="badge badge-clear">({{cardsOverThirtyDays}})</span><span class="badge badge-danger">{{percentOverThirtyDays}}%</span> &gt; 30 days:
                     </li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="col-sm-9" id="graph-leadtime">
-
     </div>
     {{/data}}
 </div>

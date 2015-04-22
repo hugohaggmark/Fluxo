@@ -24,6 +24,18 @@ Fluxo.Visualize.DataRowCollection = function () {
         return leadTime;
     };
 
+    var getUniqueRows = function (rows) {
+        var arr = [];
+        var uniqueRows = [];
+        for (var i = 0; i < rows.length; i++) {
+            if (arr.indexOf(rows[i].card.id) === -1) {
+                arr.push(rows[i].card.id);
+                uniqueRows.push(rows[i]);
+            }
+        }
+        return uniqueRows;
+    };
+
     var findRows = function (rows, comparer) {
         var length = rows.length,
             result = [];
@@ -50,24 +62,32 @@ Fluxo.Visualize.DataRowCollection = function () {
 
     var findRowsBetweenLeadTimes = function (rows, start, stop) {
         return findRows(rows, function (dataRow) {
-            return (dataRow.leadTime() >= start && dataRow.leadTime() < stop);
+            return (dataRow.leadTime() >= start && dataRow.leadTime() <= stop);
         });
     };
 
     var calculateCardsLessThenADay = function (rows) {
-        return findRowsWithLeadTimeLessThen(rows, 1).length;
+        var cardsLessThenADay = findRowsWithLeadTimeLessThen(rows, 1);
+        debugPrint("cardsLessThenADay", cardsLessThenADay);
+        return cardsLessThenADay.length;
     };
 
-    var calculateCardsBetweenOneAndEightDays = function (rows) {
-        return findRowsBetweenLeadTimes(rows, 1, 8).length;
+    var calculateCardsBetweenOneAndSevenDays = function (rows) {
+        var cardsBetweenOneAndSevenDays = findRowsBetweenLeadTimes(rows, 1, 7);
+        debugPrint("cardsBetweenOneAndSevenDays", cardsBetweenOneAndSevenDays);
+        return cardsBetweenOneAndSevenDays.length;
     };
 
     var calculateCardsBetweenEightAndThirtyDays = function (rows) {
-        return findRowsBetweenLeadTimes(rows, 8, 31).length;
+        var cardsBetweenEightAndThirtyDays = findRowsBetweenLeadTimes(rows, 8, 30);
+        debugPrint("cardsBetweenEightAndThirtyDays", cardsBetweenEightAndThirtyDays);
+        return cardsBetweenEightAndThirtyDays.length;
     };
 
     var calculateCardsOverThirtyDays = function (rows) {
-        return findRowsWithLeadTimeMoreThen(rows, 30).length;
+        var cardsOverThirtyDays = findRowsWithLeadTimeMoreThen(rows, 30);
+        debugPrint("cardsOverThirtyDays", cardsOverThirtyDays);
+        return cardsOverThirtyDays.length;
     };
 
     var calculatePercent = function (totalCount, rowCount) {
@@ -80,26 +100,43 @@ Fluxo.Visualize.DataRowCollection = function () {
     this.addDataRow = function (label, card, actionResults) {
         var dataRow = new Fluxo.Visualize.DataRow(label, card, actionResults);
         dataRows.push(dataRow);
+
+        if (labels.indexOf(dataRow.label) === -1) {
+            labels.push(dataRow.label);
+        }
     };
 
-    var getStatisticsObject = function (rows) {
+    var debugPrint = function (label, rows) {
+        console.log(label);
+        for (var i = 0; i < rows.length; i++) {
+            console.log(rows[i].toString());
+        }
+    };
+
+    var getStatisticsObject = function (rows, name) {
+        var cardsLessThenADay = calculateCardsLessThenADay(rows);
+        var cardsBetweenOneAndSevenDays = calculateCardsBetweenOneAndSevenDays(rows);
+        var cardsBetweenEightAndThirtyDays = calculateCardsBetweenEightAndThirtyDays(rows);
+        var cardsOverThirtyDays = calculateCardsOverThirtyDays(rows);
         return {
+            name: name,
+            id: name.replace(/\s+/g, ''),
             cards: rows.length,
-            leadTime: calculateTotalLeadTime(rows),
-            averageLeadTime: calculateAverageLeadTime(rows),
-            cardsLessThenADay: calculateCardsLessThenADay(rows),
-            percentLessThenADay: calculatePercent(rows.length, calculateCardsLessThenADay(rows)),
-            cardsBetweenOneAndSevenDays: calculateCardsBetweenOneAndEightDays(rows),
-            percentBetweenOneAndSevenDays: calculatePercent(rows.length, calculateCardsBetweenOneAndEightDays(rows)),
-            cardsBetweenEightAndThirtyDays: calculateCardsBetweenEightAndThirtyDays(rows),
-            percentBetweenEightAndThirtyDays: calculatePercent(rows.length, calculateCardsBetweenEightAndThirtyDays(rows)),
-            cardsOverThirtyDays: calculateCardsOverThirtyDays(rows),
-            percentOverThirtyDays: calculatePercent(rows.length, calculateCardsOverThirtyDays(rows))
+            leadTime: Math.round(calculateTotalLeadTime(rows)),
+            averageLeadTime: Math.round(calculateAverageLeadTime(rows)),
+            cardsLessThenADay: cardsLessThenADay,
+            percentLessThenADay: Math.round(calculatePercent(rows.length, cardsLessThenADay)),
+            cardsBetweenOneAndSevenDays: cardsBetweenOneAndSevenDays,
+            percentBetweenOneAndSevenDays: Math.round(calculatePercent(rows.length, cardsBetweenOneAndSevenDays)),
+            cardsBetweenEightAndThirtyDays: cardsBetweenEightAndThirtyDays,
+            percentBetweenEightAndThirtyDays: Math.round(calculatePercent(rows.length, cardsBetweenEightAndThirtyDays)),
+            cardsOverThirtyDays: cardsOverThirtyDays,
+            percentOverThirtyDays: Math.round(calculatePercent(rows.length, cardsOverThirtyDays))
         };
     };
 
     this.totals = function () {
-        return getStatisticsObject(dataRows);
+        return getStatisticsObject(getUniqueRows(dataRows), "Totals");
     };
 
     this.label = function (label) {
@@ -107,6 +144,10 @@ Fluxo.Visualize.DataRowCollection = function () {
             return row.label === label;
         });
 
-        return getStatisticsObject(rows);
+        return getStatisticsObject(rows, label);
+    };
+
+    this.labels = function () {
+        return labels;
     };
 };

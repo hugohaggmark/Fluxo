@@ -54,6 +54,10 @@ describe("DataRowCollections", function () {
         it("Should have a totals object with 0 percent with leadtime over 30 days", function () {
             expect(datarowCollection.totals().percentOverThirtyDays).toEqual(0);
         });
+
+        it("Should have an empty labels collection", function () {
+            expect(datarowCollection.labels().length).toEqual(0);
+        });
     });
 
     describe("A datarow collection with several datarows", function () {
@@ -94,12 +98,30 @@ describe("DataRowCollections", function () {
         }];
 
         beforeEach(function () {
-            datarowCollection.addDataRow("Bugs", "1 Hour", oneHour);
-            datarowCollection.addDataRow("Bugs", "1 Day", oneDay);
-            datarowCollection.addDataRow("Maintanance", "7 Days", sevenDays);
-            datarowCollection.addDataRow("Maintanance", "8 Days", eightDays);
-            datarowCollection.addDataRow("User Story", "30 Days", thirtyDays);
-            datarowCollection.addDataRow("User Story", "31 Days", thirtyOneDays);
+            datarowCollection.addDataRow("Bugs", {
+                name: "1 Hour",
+                id: 1
+            }, oneHour);
+            datarowCollection.addDataRow("Bugs", {
+                name: "1 Day",
+                id: 2
+            }, oneDay);
+            datarowCollection.addDataRow("Maintanance", {
+                name: "7 Days",
+                id: 3
+            }, sevenDays);
+            datarowCollection.addDataRow("Maintanance", {
+                name: "8 Days",
+                id: 4
+            }, eightDays);
+            datarowCollection.addDataRow("User Story", {
+                name: "30 Days",
+                id: 5
+            }, thirtyDays);
+            datarowCollection.addDataRow("User Story", {
+                name: "31 Days",
+                id: 6
+            }, thirtyOneDays);
         });
 
         it("Should have totals object with 6 cards", function () {
@@ -107,11 +129,11 @@ describe("DataRowCollections", function () {
         });
 
         it("Should have a totals object with correct leadtime", function () {
-            expect(datarowCollection.totals().leadTime).toEqual(77.04166666666666);
+            expect(datarowCollection.totals().leadTime).toEqual(77);
         });
 
         it("Should have a totals object with correct average leadtime", function () {
-            expect(datarowCollection.totals().averageLeadTime).toEqual(12.840277777777777);
+            expect(datarowCollection.totals().averageLeadTime).toEqual(13);
         });
 
         it("Should have a totals object with correct cards with leadtime less then a day", function () {
@@ -119,7 +141,7 @@ describe("DataRowCollections", function () {
         });
 
         it("Should have a totals object with correct percent with leadtime less then a day", function () {
-            expect(datarowCollection.totals().percentLessThenADay).toEqual((1 / 6) * 100);
+            expect(datarowCollection.totals().percentLessThenADay).toEqual(17);
         });
 
         it("Should have a totals object with correct cards with leadtime between 1 and 7 days", function () {
@@ -127,7 +149,7 @@ describe("DataRowCollections", function () {
         });
 
         it("Should have a totals object with correct percent with leadtime between 1 and 7 days", function () {
-            expect(datarowCollection.totals().percentBetweenOneAndSevenDays).toEqual((2 / 6) * 100);
+            expect(datarowCollection.totals().percentBetweenOneAndSevenDays).toEqual(33);
         });
 
         it("Should have a totals object with correct cards with leadtime between 8 and 30 days", function () {
@@ -135,7 +157,7 @@ describe("DataRowCollections", function () {
         });
 
         it("Should have a totals object with correct percent with leadtime between 8 and 30 days", function () {
-            expect(datarowCollection.totals().percentBetweenEightAndThirtyDays).toEqual((2 / 6) * 100);
+            expect(datarowCollection.totals().percentBetweenEightAndThirtyDays).toEqual(33);
         });
 
         it("Should have a totals object with correct cards with leadtime over 30 days", function () {
@@ -143,7 +165,7 @@ describe("DataRowCollections", function () {
         });
 
         it("Should have a totals object with correct percent with leadtime over 30 days", function () {
-            expect(datarowCollection.totals().percentOverThirtyDays).toEqual((1 / 6) * 100);
+            expect(datarowCollection.totals().percentOverThirtyDays).toEqual(17);
         });
 
         it("Should have a label object named Bugs", function () {
@@ -155,12 +177,128 @@ describe("DataRowCollections", function () {
         });
 
         it("Should have a label object named Bugs correct leadtime", function () {
-            expect(datarowCollection.label("Bugs").leadTime).toEqual(1.0416666666666667);
+            expect(datarowCollection.label("Bugs").leadTime).toEqual(1);
         });
 
         it("Should have a label object named Bugs correct average leadtime", function () {
-            expect(datarowCollection.label("Bugs").averageLeadTime).toEqual(0.5208333333333334);
+            expect(datarowCollection.label("Bugs").averageLeadTime).toEqual(1);
         });
 
+        it("Should have a label object named Bugs with correct cards with leadtime less then a day", function () {
+            expect(datarowCollection.label("Bugs").cardsLessThenADay).toEqual(1);
+        });
+
+        it("Should have a label object named Bugs with correct percent with leadtime less then a day", function () {
+            expect(datarowCollection.label("Bugs").percentLessThenADay).toEqual(50);
+        });
+
+        it("Should have a label object named Bugs with correct cards with leadtime between 1 and 7 days", function () {
+            expect(datarowCollection.label("Bugs").cardsBetweenOneAndSevenDays).toEqual(1);
+        });
+
+        it("Should have a label object named Bugs with correct percent with leadtime between 1 and 7 days", function () {
+            expect(datarowCollection.label("Bugs").percentBetweenOneAndSevenDays).toEqual(50);
+        });
+
+        it("Should have a label object named Bugs with correct cards with leadtime between 8 and 30 days", function () {
+            expect(datarowCollection.label("Bugs").cardsBetweenEightAndThirtyDays).toEqual(0);
+        });
+
+        it("Should have a label object named Bugs with correct percent with leadtime between 8 and 30 days", function () {
+            expect(datarowCollection.label("Bugs").percentBetweenEightAndThirtyDays).toEqual(0);
+        });
+
+        it("Should have a label object named Bugs with correct cards with leadtime over 30 days", function () {
+            expect(datarowCollection.label("Bugs").cardsOverThirtyDays).toEqual(0);
+        });
+
+        it("Should have a label object named Bugs with correct percent with leadtime over 30 days", function () {
+            expect(datarowCollection.label("Bugs").percentOverThirtyDays).toEqual(0);
+        });
+
+        it("Should have a labels collection with 3 elements", function () {
+            expect(datarowCollection.labels().length).toEqual(3);
+        });
+    });
+
+    describe("A datarow collection with a datarow that has multiple labels assigned", function () {
+        var oneDay = [{
+            date: new Date("2015-01-03T00:00:00.000Z")
+        }, {
+            date: new Date("2015-01-02T00:00:00.000Z")
+        }];
+
+        var eightDays = [{
+            date: new Date("2015-01-09T00:00:00.000Z")
+        }, {
+            date: new Date("2015-01-01T00:00:00.000Z")
+        }];
+
+        beforeEach(function () {
+            datarowCollection.addDataRow("Bugs", {
+                name: "1 Day",
+                id: 1
+            }, oneDay);
+            datarowCollection.addDataRow("Maintanance", {
+                name: "1 Day",
+                id: 1
+            }, oneDay);
+            datarowCollection.addDataRow("User Story", {
+                name: "1 Day",
+                id: 1
+            }, oneDay);
+            datarowCollection.addDataRow("Innovation", {
+                name: "1 Day",
+                id: 2
+            }, eightDays);
+        });
+
+        it("Should have totals object with 1 cards", function () {
+            expect(datarowCollection.totals().cards).toEqual(2);
+        });
+
+        it("Should have a labels collection with 3 elements", function () {
+            expect(datarowCollection.labels().length).toEqual(4);
+        });
+
+        it("Should have a totals object with correct leadtime", function () {
+            expect(datarowCollection.totals().leadTime).toEqual(9);
+        });
+
+        it("Should have a totals object with correct average leadtime", function () {
+            expect(datarowCollection.totals().averageLeadTime).toEqual(5);
+        });
+
+
+        it("Should have a totals object with correct cards with leadtime less then a day", function () {
+            expect(datarowCollection.totals().cardsLessThenADay).toEqual(0);
+        });
+
+        it("Should have a totals object with correct percent with leadtime less then a day", function () {
+            expect(datarowCollection.totals().percentLessThenADay).toEqual(0);
+        });
+
+        it("Should have a totals object with correct cards with leadtime between 1 and 7 days", function () {
+            expect(datarowCollection.totals().cardsBetweenOneAndSevenDays).toEqual(1);
+        });
+
+        it("Should have a totals object with correct percent with leadtime between 1 and 7 days", function () {
+            expect(datarowCollection.totals().percentBetweenOneAndSevenDays).toEqual(50);
+        });
+
+        it("Should have a totals object with correct cards with leadtime between 8 and 30 days", function () {
+            expect(datarowCollection.totals().cardsBetweenEightAndThirtyDays).toEqual(1);
+        });
+
+        it("Should have a totals object with correct percent with leadtime between 8 and 30 days", function () {
+            expect(datarowCollection.totals().percentBetweenEightAndThirtyDays).toEqual(50);
+        });
+
+        it("Should have a totals object with correct cards with leadtime over 30 days", function () {
+            expect(datarowCollection.totals().cardsOverThirtyDays).toEqual(0);
+        });
+        it("Should have a totals object with correct percent with leadtime over 30 days", function () {
+            expect(datarowCollection.totals().percentOverThirtyDays).toEqual(0);
+        });
     });
 });

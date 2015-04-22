@@ -29,7 +29,10 @@ describe("DataRows", function () {
 
     describe("A datarow with three actionResults", function () {
         var label = "Total";
-        var card = "Hello World Card";
+        var card = {
+            id: 1,
+            name: "Hello World Card"
+        };
         var actionResults = [{
             date: new Date("2015-01-03T12:00:00.000Z")
         }, {
@@ -47,7 +50,7 @@ describe("DataRows", function () {
         });
 
         it("Should be exportable as csv string", function () {
-            expect(datarow.toString()).toEqual(label + ";" + card + ";2.5;" + actionResults[0].date.toISOString());
+            expect(datarow.toString()).toEqual(label + ";" + card.name + ";2.5;" + actionResults[0].date.toISOString());
         });
     });
 });

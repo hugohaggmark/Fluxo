@@ -1,6 +1,7 @@
 var Fluxo = Fluxo || {};
 Fluxo.Visualize = Fluxo.Visualize || {};
 
+
 Fluxo.Visualize.SlideShow = function () {
     'use strict';
     var slidesArray = [];
