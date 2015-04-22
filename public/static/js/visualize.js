@@ -199,18 +199,17 @@ var renderLeadTime = function () {
     $.get("../static/templates/leadtime-per-label.html", function (template) {
         for (var i = 0; i < dataRows.labels().length; i++) {
             var label = dataRows.labels()[i];
-            var name = dataRows.label(label).name;
-            var id = dataRows.label(label).id;
-            var chartId = "#graph-leadtime-" + id;
-            var divId = "#leadtime-per-label-" + id;
+            var dataRow = dataRows.label(label);
+            var chartId = "#graph-leadtime-" + dataRow.id;
+            var divId = "#leadtime-per-label-" + dataRow.id;
             var seriesData = data.leadTime.series[i].data;
             var leadTimePerLabel = Mustache.render(template, {
-                data: dataRows.label(label)
+                data: dataRow
             });
 
             $("#leadtime-per-label").append(leadTimePerLabel);
             plotLeadTimeGraph(chartId,
-                name,
+                dataRow.name,
                 seriesData);
             slideshow.addSlide(divId);
         }
