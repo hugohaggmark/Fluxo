@@ -27,6 +27,22 @@ Fluxo.Visualize.DataRow = function (label, card, actionResults) {
         return calculateLeadTime();
     };
 
+    this.leadTimeSerie = function () {
+        if (this.actionResults.length <= 1)
+            return null;
+
+        var lastDate = getLastDate(),
+            utcDate = Date.UTC(lastDate.getUTCFullYear(),
+                lastDate.getUTCMonth(),
+                lastDate.getUTCDate(),
+                lastDate.getUTCHours(),
+                lastDate.getUTCMinutes(),
+                lastDate.getUTCSeconds(),
+                0),
+            leadTime = calculateLeadTime();
+        return [utcDate, leadTime];
+    };
+
     this.toString = function () {
         var string = this.label;
         string += ";";

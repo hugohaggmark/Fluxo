@@ -25,6 +25,10 @@ describe("DataRows", function () {
         it("Should have zero leadTime", function () {
             expect(datarow.leadTime()).toEqual(0);
         });
+
+        it("Should have no leadTimeSerie", function () {
+            expect(datarow.leadTimeSerie()).not.toEqual(jasmine.anything());
+        });
     });
 
     describe("A datarow with three actionResults", function () {
@@ -41,12 +45,24 @@ describe("DataRows", function () {
             date: new Date("2015-01-01T00:00:00.000Z")
         }];
 
+        var utcDate = Date.UTC(actionResults[0].date.getUTCFullYear(),
+            actionResults[0].date.getUTCMonth(),
+            actionResults[0].date.getUTCDate(),
+            actionResults[0].date.getUTCHours(),
+            actionResults[0].date.getUTCMinutes(),
+            actionResults[0].date.getUTCSeconds(),
+            0);
+
         beforeEach(function () {
             datarow = new Fluxo.Visualize.DataRow(label, card, actionResults);
         });
 
         it("Should have a correct leadTime", function () {
             expect(datarow.leadTime()).toEqual(2.5);
+        });
+
+        it("Should have a correct leadTimeSerie", function () {
+            expect(datarow.leadTimeSerie()).toEqual([utcDate, 2.5]);
         });
 
         it("Should be exportable as csv string", function () {
