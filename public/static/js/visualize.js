@@ -243,6 +243,7 @@ var plotLeadTimeGraph = function (id, name, data) {
             type: 'datetime'
         },
         yAxis: {
+            floor: 0,
             title: {
                 text: 'Days'
             }
