@@ -139,6 +139,10 @@ Fluxo.Visualize.DataRowCollection = function () {
         return getStatisticsObject(getUniqueRows(dataRows), "Totals");
     };
 
+    this.series = function (name) {
+        return [];
+    };
+
     this.label = function (label) {
         var rows = findRows(dataRows, function (row) {
             return row.label === label;

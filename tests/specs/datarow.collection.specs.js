@@ -58,6 +58,10 @@ describe("DataRowCollections", function () {
         it("Should have an empty labels collection", function () {
             expect(datarowCollection.labels().length).toEqual(0);
         });
+
+        it("Should have an empty total series collection", function () {
+            expect(datarowCollection.series("Totals").length).toEqual(0);
+        });
     });
 
     describe("A datarow collection with several datarows", function () {

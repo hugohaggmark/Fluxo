@@ -295,6 +295,12 @@ var plotLeadTimeGraph = function (id, name, data) {
 var onAuthorize = function () {
     selected.boardId = getQueryVariable("boardId");
     selected.listIds = getQueryVariable("listIds").split(",");
+
+    ga('send', 'pageview', {
+        'page': '/visualize/authorized?boardId=' + selected.boardId + "&listIds=" + getQueryVariable("listIds"),
+        'title': 'Authorized Fluxo Visualize'
+    });
+
     $progress.toggle();
     $progressbar.toggle();
     calculateLeadTime(function () {

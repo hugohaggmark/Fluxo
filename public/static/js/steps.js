@@ -67,6 +67,11 @@ var onListClicked = function () {
 
 var onStep = function () {
     if (currentStep === 2) {
+        ga('send', 'pageview', {
+            'page': '/step-2',
+            'title': 'Step 2'
+        });
+
         step1Content.hide();
         step3Content.hide();
         step2Content.show();
@@ -79,6 +84,11 @@ var onStep = function () {
     }
 
     if (currentStep === 3) {
+        ga('send', 'pageview', {
+            'page': '/step-3',
+            'title': 'Step 3'
+        });
+
         step1Content.hide();
         step2Content.hide();
         step3Content.show();
@@ -91,6 +101,10 @@ var onStep = function () {
     }
 
     if (currentStep === 4) {
+        ga('send', 'pageview', {
+            'page': '/step-visualize',
+            'title': 'Step Visualize'
+        });
         window.open("/visualize/index.html?boardId=" + selected.boardId + "&listIds=" + selected.listIds.join(), "_blank");
         currentStep--;
         onStep();
@@ -115,6 +129,11 @@ nextStep.click(function () {
 
 var onAuthorize = function () {
     Trello.members.get("me", function (member) {
+        ga('send', 'pageview', {
+            'page': '/authorized',
+            'title': 'Welcome ' + member.fullName
+        });
+
         $("#fullName").text(member.fullName);
         authorized = true;
         currentStep++;
@@ -123,6 +142,11 @@ var onAuthorize = function () {
 };
 
 var onAuthorizeFailed = function () {
+    ga('send', 'pageview', {
+        'page': '/not-authorized',
+        'title': 'Not authorized'
+    });
+
     currentStep = 1;
     authorized = false;
 };
@@ -134,7 +158,6 @@ Trello.authorize({
 });
 
 $("#step2").click(function () {
-    console.log('step 2 click');
     Trello.members.get("my/boards", function (boards) {
         $.get("static/templates/step2.html", function (template) {
             var rendered = Mustache.render(template, {
