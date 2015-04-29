@@ -11,6 +11,4 @@ app.use('/static', express.static('static'));
 
 var server = app.listen(appPort, function () {
     console.log('Fluxo listening at port:%s', appPort);
-    console.log("fluxoConfig.appKey", fluxoConfig.appKey);
-    console.log("fluxoConfig.appSecret", fluxoConfig.appSecret);
 });
