@@ -157,30 +157,34 @@ var addLeadTimeData = function (card, actionsResult) {
 var calculateLeadTime = function (callback) {
     var listId = selected.listIds[selected.listIds.length - 1];
     Trello.get("lists/" + listId + "?cards=all", function (cardsResult) {
-        data.leadTime.cards = cardsResult.cards.length;
+        var cardCount = cardsResult.cards.length;
+        data.leadTime.cards = cardCount;
         if (cardsResult.cards.length === 0) {
             leadTimeNoResults.show();
         }
-        var done = 0;
-        $progressbar.attr("aria-valuemax", cardsResult.cards.length);
-        $.each(cardsResult.cards, function (index, card) {
-            Trello.get("cards/" + card.id + "/actions/?filter=createCard,updateCard:idList", function (actionsResult) {
-                done++;
-                updateProgress(card, done, cardsResult.cards.length);
-                addLeadTimeData(card, actionsResult);
 
-                if (done == cardsResult.cards.length) {
-                    $("body").removeClass("loading");
-                    callback();
-                }
-            });
+        $progressbar.attr("aria-valuemax", cardCount);
+        $.each(cardsResult.cards, function (index, card) {
+            if (index % 1 === 0) {
+                setTimeout(function () {
+                    Trello.get("cards/" + card.id + "/actions/?filter=createCard,updateCard:idList", function (actionsResult) {
+                        updateProgress(index, cardCount);
+                        addLeadTimeData(card, actionsResult);
+
+                        if (index === cardCount - 1) {
+                            $("body").removeClass("loading");
+                            callback();
+                        }
+                    });
+                }, 5000);
+            }
         });
     });
 };
 
-var updateProgress = function (card, done, max) {
-    var width = (done / max) * 100 + "%";
-    $progressbar.attr("aria-valuenow", done);
+var updateProgress = function (index, cardCount) {
+    var width = (index / cardCount) * 100 + "%";
+    $progressbar.attr("aria-valuenow", index);
     $progressbar.width(width);
 };
 
