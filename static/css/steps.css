@@ -1,0 +1,17 @@
+body {
+    background-color: #aaa;
+}
+.btn {
+    margin-bottom: 8px;
+    margin-right: 4px;
+}
+.list {
+    margin-right: 10px;
+    line-height: 40px;
+}
+#step2-content {
+    display: none;
+}
+#step3-content {
+    display: none;
+}
