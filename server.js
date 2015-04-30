@@ -16,24 +16,11 @@ app.use(session({
     maxAge: 30 * 24 * 60 * 60 * 1000
 }));
 
-//app.use('/', express.static('public'));
 app.use('/static', express.static('static'));
 
 app.get('/', require_trello_login, function (req, res) {
-    // if (!req.session.oauth_access_token) {
-    //     res.redirect("/trello_login");
-    // } else {
     res.render("index");
-    // }
 });
-
-// app.get('/visualize', function (req, res) {
-//     if (!req.session.oauth_access_token) {
-//         res.redirect("/google_login");
-//     } else {
-//         res.sendFile(__dirname + "/public/visualize/index.html");
-//     }
-// });
 
 app.get('/demo', function (req, res) {
     res.sendFile(__dirname + "/static/demo/index.html");
@@ -102,7 +89,6 @@ app.get('/trello_callback', function (req, res) {
         });
 });
 
-
 function require_trello_login(req, res, next) {
     if (!req.session.oauth_access_token) {
         res.redirect("/trello_login?action=" + querystring.escape(req.originalUrl));
@@ -111,7 +97,7 @@ function require_trello_login(req, res, next) {
     next();
 }
 
-app.get('/api/me', require_trello_login, function (req, res) {
+var doTrelloRequest = function (resourceUrl, req, res) {
     var oa = new OAuth(req.session.oa._requestUrl,
         req.session.oa._accessUrl,
         req.session.oa._consumerKey,
@@ -121,32 +107,29 @@ app.get('/api/me', require_trello_login, function (req, res) {
         req.session.oa._signatureMethod);
 
     oa.getProtectedResource(
-        "https://api.trello.com/1/members/me",
+        resourceUrl,
         "GET",
         req.session.oauth_access_token,
         req.session.oauth_access_token_secret,
         function (error, data, response) {
-            res.json(data);
+            if (error) {
+                res.status(error.statusCode).json(error).end();
+                return;
+            }
+            res.json(JSON.parse(data));
         });
+};
+
+app.get("/api/me", require_trello_login, function (req, res) {
+    doTrelloRequest("https://api.trello.com/1/members/me", req, res);
 });
 
-app.get('/api/boards', require_trello_login, function (req, res) {
-    var oa = new OAuth(req.session.oa._requestUrl,
-        req.session.oa._accessUrl,
-        req.session.oa._consumerKey,
-        req.session.oa._consumerSecret,
-        req.session.oa._version,
-        req.session.oa._authorize_callback,
-        req.session.oa._signatureMethod);
+app.get("/api/my/boards", require_trello_login, function (req, res) {
+    doTrelloRequest("https://trello.com/1/members/my/boards", req, res);
+});
 
-    oa.getProtectedResource(
-        "https://api.trello.com/1/members/me",
-        "GET",
-        req.session.oauth_access_token,
-        req.session.oauth_access_token_secret,
-        function (error, data, response) {
-            res.json(data);
-        });
+app.get("/api/boards/:boardid/lists", require_trello_login, function (req, res) {
+    doTrelloRequest("https://trello.com/1/boards/" + req.params.boardid + "/lists", req, res);
 });
 
 /*

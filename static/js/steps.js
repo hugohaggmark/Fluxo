@@ -127,18 +127,16 @@ nextStep.click(function () {
     onStep();
 });
 
-var onAuthorize = function () {
-    Trello.members.get("me", function (member) {
-        ga('send', 'pageview', {
-            'page': '/authorized',
-            'title': 'Welcome ' + member.fullName
-        });
-
-        $("#fullName").text(member.fullName);
-        authorized = true;
-        currentStep++;
-        onStep();
+var onAuthorize = function (member) {
+    ga('send', 'pageview', {
+        'page': '/authorized',
+        'title': 'Welcome ' + member.fullName
     });
+
+    $("#fullName").text(member.fullName);
+    authorized = true;
+    currentStep++;
+    onStep();
 };
 
 var onAuthorizeFailed = function () {
@@ -151,21 +149,39 @@ var onAuthorizeFailed = function () {
     authorized = false;
 };
 
-Trello.authorize({
-    interactive: false,
-    success: onAuthorize,
-    error: onAuthorizeFailed
-});
+var Trello = {
+    authorize: function (successCallback, failureCallback) {
+        $.ajax({
+            method: "GET",
+            dataType: "json",
+            url: '/api/me',
+            success: function (member) {
+                successCallback(member);
+            },
+            error: failureCallback
+        });
+    }
+};
+
+Trello.authorize(onAuthorize, onAuthorizeFailed);
 
 $("#step2").click(function () {
-    Trello.members.get("my/boards", function (boards) {
-        $.get("static/templates/step2.html", function (template) {
-            var rendered = Mustache.render(template, {
-                boards: boards
+    $.ajax({
+        method: "GET",
+        dataType: "json",
+        url: "/api/my/boards",
+        success: function (boards) {
+            $.get("static/templates/step2.html", function (template) {
+                var rendered = Mustache.render(template, {
+                    boards: boards
+                });
+                $("#step2-target").html(rendered);
+                $(".btn-board").change(onBoardClicked);
             });
-            $("#step2-target").html(rendered);
-            $(".btn-board").change(onBoardClicked);
-        });
+        },
+        error: function (data, textStatus, jqXHR) {
+            console.log("Ooops something went terribly wrong", textStatus);
+        }
     });
 });
 
@@ -173,24 +189,22 @@ $("#step3").click(function () {
     selected.listIds.length = 0;
     selected.listNames.length = 0;
     renderFlow();
-    Trello.get("boards/" + selected.boardId + "/lists", function (lists) {
-        $.get("static/templates/step3.html", function (template) {
-            var rendered = Mustache.render(template, {
-                lists: lists
+
+    $.ajax({
+        method: "GET",
+        dataType: "json",
+        url: "/api/boards/" + selected.boardId + "/lists",
+        success: function (lists) {
+            $.get("static/templates/step3.html", function (template) {
+                var rendered = Mustache.render(template, {
+                    lists: lists
+                });
+                $("#step3-target").html(rendered);
+                $(".btn-list").change(onListClicked);
             });
-            $("#step3-target").html(rendered);
-            $(".btn-list").change(onListClicked);
-        });
-    });
-});
-
-
-$("#connectLink").click(function () {
-    Trello.authorize({
-        type: "popup",
-        name: "Fluxo",
-        expiration: "30days",
-        success: onAuthorize,
-        error: onAuthorizeFailed
+        },
+        error: function (data, textStatus, jqXHR) {
+            console.log("Ooops something went terribly wrong", textStatus);
+        }
     });
 });
