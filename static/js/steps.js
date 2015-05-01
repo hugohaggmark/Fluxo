@@ -14,6 +14,7 @@ var step2Label = $("#step2-label");
 var step3Label = $("#step3-label");
 var nextStep = $("#nextStep");
 var prevStep = $("#prevStep");
+var api = new Fluxo.Api();
 
 var renderFlow = function () {
     $.get("static/templates/step3-flow.html", function (template) {
@@ -105,7 +106,7 @@ var onStep = function () {
             'page': '/step-visualize',
             'title': 'Step Visualize'
         });
-        window.open("/visualize/index.html?boardId=" + selected.boardId + "&listIds=" + selected.listIds.join(), "_blank");
+        window.open("/visualize/?boardId=" + selected.boardId + "&listIds=" + selected.listIds.join(), "_blank");
         currentStep--;
         onStep();
     }
@@ -127,18 +128,16 @@ nextStep.click(function () {
     onStep();
 });
 
-var onAuthorize = function () {
-    Trello.members.get("me", function (member) {
-        ga('send', 'pageview', {
-            'page': '/authorized',
-            'title': 'Welcome ' + member.fullName
-        });
-
-        $("#fullName").text(member.fullName);
-        authorized = true;
-        currentStep++;
-        onStep();
+var onAuthorize = function (member) {
+    ga('send', 'pageview', {
+        'page': '/authorized',
+        'title': 'Welcome ' + member.fullName
     });
+
+    $("#fullName").text(member.fullName);
+    authorized = true;
+    currentStep++;
+    onStep();
 };
 
 var onAuthorizeFailed = function () {
@@ -151,46 +150,35 @@ var onAuthorizeFailed = function () {
     authorized = false;
 };
 
-Trello.authorize({
-    interactive: false,
-    success: onAuthorize,
-    error: onAuthorizeFailed
-});
+var renderBoards = function (boards) {
+    $.get("static/templates/step2.html", function (template) {
+        var rendered = Mustache.render(template, {
+            boards: boards
+        });
+        $("#step2-target").html(rendered);
+        $(".btn-board").change(onBoardClicked);
+    });
+};
+
+var renderLists = function (lists) {
+    $.get("static/templates/step3.html", function (template) {
+        var rendered = Mustache.render(template, {
+            lists: lists
+        });
+        $("#step3-target").html(rendered);
+        $(".btn-list").change(onListClicked);
+    });
+};
 
 $("#step2").click(function () {
-    Trello.members.get("my/boards", function (boards) {
-        $.get("static/templates/step2.html", function (template) {
-            var rendered = Mustache.render(template, {
-                boards: boards
-            });
-            $("#step2-target").html(rendered);
-            $(".btn-board").change(onBoardClicked);
-        });
-    });
+    api.get("/api/my/boards", renderBoards);
 });
 
 $("#step3").click(function () {
     selected.listIds.length = 0;
     selected.listNames.length = 0;
     renderFlow();
-    Trello.get("boards/" + selected.boardId + "/lists", function (lists) {
-        $.get("static/templates/step3.html", function (template) {
-            var rendered = Mustache.render(template, {
-                lists: lists
-            });
-            $("#step3-target").html(rendered);
-            $(".btn-list").change(onListClicked);
-        });
-    });
+    api.get("/api/boards/" + selected.boardId + "/lists", renderLists);
 });
 
-
-$("#connectLink").click(function () {
-    Trello.authorize({
-        type: "popup",
-        name: "Fluxo",
-        expiration: "30days",
-        success: onAuthorize,
-        error: onAuthorizeFailed
-    });
-});
+api.authorize(onAuthorize, onAuthorizeFailed);

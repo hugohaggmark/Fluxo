@@ -154,32 +154,72 @@ var addLeadTimeData = function (card, actionsResult) {
     }
 };
 
+var getAllActions = function (index, card, cardCount, callback, actionsResult) {
+    updateProgress(index, cardCount);
+    addLeadTimeData(card, actionsResult);
+
+    if (index === cardCount - 1) {
+        $("body").removeClass("loading");
+        callback();
+    }
+};
+
+var getAllCards = function (cardsResult, callback) {
+    var cardCount = cardsResult.cards.length;
+    data.leadTime.cards = cardCount;
+    if (cardCount === 0) {
+        leadTimeNoResults.show();
+    }
+
+    $progressbar.attr("aria-valuemax", cardCount);
+    $.each(cardsResult.cards, function (index, card) {
+        getAllActions(index, card, cardCount, callback, fakeActionsResult());
+    });
+};
+
+var fakeCardResults = function () {
+    var fakeCards = [];
+    var fakeLabels = [{
+        name: "Bugs"
+    }, {
+        name: "Maintenance"
+    }, {
+        name: "Stories"
+    }, {
+        name: "Innovation"
+    }];
+    for (var i = 0; i < 60; i++) {
+        var index = Math.floor(Math.random() * 4);
+        var label = fakeLabels[index];
+        fakeCards.push({
+            id: i,
+            name: "Card " + i,
+            labels: [label]
+        });
+    }
+
+    return {
+        cards: fakeCards
+    };
+};
+
+var fakeActionsResult = function () {
+    var fakeActionsResults = [];
+    var stop = Math.floor(Math.random() * 60) - 1;
+    var someDate = new Date();
+    someDate.setDate(someDate.getDate() - stop);
+    fakeActionsResults.push({
+        date: someDate
+    });
+    fakeActionsResults.push({
+        date: new Date()
+    });
+    return fakeActionsResults;
+};
+
 var calculateLeadTime = function (callback) {
     var listId = selected.listIds[selected.listIds.length - 1];
-    Trello.get("lists/" + listId + "?cards=all", function (cardsResult) {
-        var cardCount = cardsResult.cards.length;
-        data.leadTime.cards = cardCount;
-        if (cardsResult.cards.length === 0) {
-            leadTimeNoResults.show();
-        }
-
-        $progressbar.attr("aria-valuemax", cardCount);
-        $.each(cardsResult.cards, function (index, card) {
-            if (index % 1 === 0) {
-                setTimeout(function () {
-                    Trello.get("cards/" + card.id + "/actions/?filter=createCard,updateCard:idList", function (actionsResult) {
-                        updateProgress(index, cardCount);
-                        addLeadTimeData(card, actionsResult);
-
-                        if (index === cardCount - 1) {
-                            $("body").removeClass("loading");
-                            callback();
-                        }
-                    });
-                }, 5000);
-            }
-        });
-    });
+    getAllCards(fakeCardResults(), callback);
 };
 
 var updateProgress = function (index, cardCount) {
@@ -227,16 +267,6 @@ var renderLeadTime = function () {
         });
         $("#previous").click(function () {
             slideshow.previousSlide();
-        });
-    });
-};
-
-var fixDuplicateData = function () {
-    $.each(data.leadTime.series, function (index, serie) {
-        $.each(serie.data, function (index, data) {
-            if (serie.duplicates[data[0]] > 1) {
-                data[1] = Math.ceil(data[1] / serie.duplicates[data[0]]);
-            }
         });
     });
 };
@@ -297,12 +327,9 @@ var plotLeadTimeGraph = function (id, name, data) {
 };
 
 var onAuthorize = function () {
-    selected.boardId = getQueryVariable("boardId");
-    selected.listIds = getQueryVariable("listIds").split(",");
-
     ga('send', 'pageview', {
-        'page': '/visualize/authorized?boardId=' + selected.boardId + "&listIds=" + getQueryVariable("listIds"),
-        'title': 'Authorized Fluxo Visualize'
+        'page': '/demo',
+        'title': 'Demo Fluxo Visualize'
     });
 
     $progress.toggle();
@@ -318,12 +345,7 @@ $(document).ready(function () {
     initDarkChartTheme();
     slideshow = new Fluxo.Visualize.SlideShow();
     dataRows = new Fluxo.Visualize.DataRowCollection();
-    Trello.authorize({
-        type: "popup",
-        name: "Fluxo",
-        expiration: "never",
-        success: onAuthorize
-    });
+    onAuthorize();
 });
 
 var initDarkChartTheme = function () {
