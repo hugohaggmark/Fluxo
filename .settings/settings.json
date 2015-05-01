@@ -1,0 +1,6 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+	"javascript.suggest.alwaysAllWords": true,
+	"javascript.suggest.useCodeSnippetsOnMethodSuggest": true,
+	"javascript.validate.lint.comparisonOperatorsNotStrict": "warning"
+}

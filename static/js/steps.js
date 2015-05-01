@@ -14,6 +14,7 @@ var step2Label = $("#step2-label");
 var step3Label = $("#step3-label");
 var nextStep = $("#nextStep");
 var prevStep = $("#prevStep");
+var api = new Fluxo.Api();
 
 var renderFlow = function () {
     $.get("static/templates/step3-flow.html", function (template) {
@@ -105,7 +106,7 @@ var onStep = function () {
             'page': '/step-visualize',
             'title': 'Step Visualize'
         });
-        window.open("/visualize/index.html?boardId=" + selected.boardId + "&listIds=" + selected.listIds.join(), "_blank");
+        window.open("/visualize/?boardId=" + selected.boardId + "&listIds=" + selected.listIds.join(), "_blank");
         currentStep--;
         onStep();
     }
@@ -149,62 +150,35 @@ var onAuthorizeFailed = function () {
     authorized = false;
 };
 
-var Trello = {
-    authorize: function (successCallback, failureCallback) {
-        $.ajax({
-            method: "GET",
-            dataType: "json",
-            url: '/api/me',
-            success: function (member) {
-                successCallback(member);
-            },
-            error: failureCallback
+var renderBoards = function (boards) {
+    $.get("static/templates/step2.html", function (template) {
+        var rendered = Mustache.render(template, {
+            boards: boards
         });
-    }
+        $("#step2-target").html(rendered);
+        $(".btn-board").change(onBoardClicked);
+    });
 };
 
-Trello.authorize(onAuthorize, onAuthorizeFailed);
+var renderLists = function (lists) {
+    $.get("static/templates/step3.html", function (template) {
+        var rendered = Mustache.render(template, {
+            lists: lists
+        });
+        $("#step3-target").html(rendered);
+        $(".btn-list").change(onListClicked);
+    });
+};
 
 $("#step2").click(function () {
-    $.ajax({
-        method: "GET",
-        dataType: "json",
-        url: "/api/my/boards",
-        success: function (boards) {
-            $.get("static/templates/step2.html", function (template) {
-                var rendered = Mustache.render(template, {
-                    boards: boards
-                });
-                $("#step2-target").html(rendered);
-                $(".btn-board").change(onBoardClicked);
-            });
-        },
-        error: function (data, textStatus, jqXHR) {
-            console.log("Ooops something went terribly wrong", textStatus);
-        }
-    });
+    api.get("/api/my/boards", renderBoards);
 });
 
 $("#step3").click(function () {
     selected.listIds.length = 0;
     selected.listNames.length = 0;
     renderFlow();
-
-    $.ajax({
-        method: "GET",
-        dataType: "json",
-        url: "/api/boards/" + selected.boardId + "/lists",
-        success: function (lists) {
-            $.get("static/templates/step3.html", function (template) {
-                var rendered = Mustache.render(template, {
-                    lists: lists
-                });
-                $("#step3-target").html(rendered);
-                $(".btn-list").change(onListClicked);
-            });
-        },
-        error: function (data, textStatus, jqXHR) {
-            console.log("Ooops something went terribly wrong", textStatus);
-        }
-    });
+    api.get("/api/boards/" + selected.boardId + "/lists", renderLists);
 });
+
+api.authorize(onAuthorize, onAuthorizeFailed);

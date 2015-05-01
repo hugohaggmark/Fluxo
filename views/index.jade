@@ -4,8 +4,8 @@ html
     title Fluxo
     script(src='static/js/hh.js ')
     link(href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css', rel='stylesheet')
-    link(href='static/css/bootstrap-select.min.css')
-    link(href='static/css/steps.css', rel='stylesheet')
+    link(href='/static/css/bootstrap-select.min.css')
+    link(href='/static/css/steps.css', rel='stylesheet')
     meta(name='viewport', content='width=device-width,initial-scale=1, user-scalable=no')
     meta(name='description=', content='Fluxo shows Kanban statistics for your Trello boards.')
     meta(name='keywords=', content='Trello,Kanban,leadtime,cycletime,throughput,flow,statistics')
@@ -13,8 +13,7 @@ html
   script.
   body
     .container
-      h3
-        | Welcome to Fluxo 
+      h3 Welcome to Fluxo 
         span#fullName
       p Follow these simple steps to get Kanban style statistics for your Trello Board.
       .btn-group(data-toggle='buttons')
@@ -65,5 +64,6 @@ html
     script(src='//code.jquery.com/jquery-1.11.2.min.js ')
     script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js ')
     script(src='//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js ')
-    script(src='static/js/bootstrap-select.min.js')
-    script(src='static/js/steps.js ')
+    script(src='/static/js/bootstrap-select.min.js')
+    script(src='/static/js/api.js ')
+    script(src='/static/js/steps.js ')

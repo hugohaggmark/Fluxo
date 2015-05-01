@@ -1,0 +1,41 @@
+doctype html
+html
+  head
+    title Fluxo Visualize
+    script(src='/static/js/hh.js ')
+    link(href='/static/css/bootstrap.slate.min.css', rel='stylesheet')
+    link(href='/static/css/visualize.css', rel='stylesheet')
+    meta(name='viewport', content='width=device-width,initial-scale=1, user-scalable=no')
+    meta(name='description=', content='Fluxo shows Kanban statistics for your Trello boards.')
+    meta(name='keywords=', content='Trello,Kanban,leadtime,cycletime,throughput,flow,statistics')
+  body
+    .container
+      #progress.progress
+        #progressbar.progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
+      p
+        #slideshow-container
+          #slideshow-content
+            #leadtime-total
+            #leadtime-per-label
+          #slideshow-controls
+            nav
+              ul.pager
+                li
+                  a#previous(href='#') Previous
+                li
+                  a#next(href='#') Next
+      p#leadtime-no-results
+        | No cards found in tha last list of your Kanban Flow. Go back and define your flow again
+      span.text-muted
+        | Fluxo is not affiliated, associated, authorized, endorsed by or in any way officially connected to Trello, Inc. (www.trello.com).
+    script(src='//code.jquery.com/jquery-1.11.2.min.js ')
+    script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js ')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.8.1/mustache.min.js ')
+    script(src='//code.highcharts.com/stock/highstock.js')
+    script(src='//code.highcharts.com/modules/exporting.js')
+    script(src='/static/js/api.js ')
+    script(src='/static/js/technical-indicators.js')
+    script(src='/static/js/slideshow.js ')
+    script(src='/static/js/datarow.js ')
+    script(src='/static/js/datarow.collection.js ')
+    script(src='/static/js/visualize.js ')

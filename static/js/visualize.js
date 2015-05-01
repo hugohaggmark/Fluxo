@@ -1,5 +1,6 @@
 var Fluxo = Fluxo || {};
 Fluxo.Visualize = Fluxo.Visualize || {};
+var api = new Fluxo.Api();
 
 var slideshow = {};
 var dataRows = {};
@@ -154,31 +155,35 @@ var addLeadTimeData = function (card, actionsResult) {
     }
 };
 
+var getAllActions = function (index, card, cardCount, callback, actionsResult) {
+    updateProgress(index, cardCount);
+    addLeadTimeData(card, actionsResult);
+
+    if (index === cardCount - 1) {
+        $("body").removeClass("loading");
+        callback();
+    }
+};
+
+var getAllCards = function (cardsResult, callback) {
+    var cardCount = cardsResult.cards.length;
+    data.leadTime.cards = cardCount;
+    if (cardCount === 0) {
+        leadTimeNoResults.show();
+    }
+
+    $progressbar.attr("aria-valuemax", cardCount);
+    $.each(cardsResult.cards, function (index, card) {
+        api.get("/api/cards/" + card.id, function (actionsResult) {
+            getAllActions(index, card, cardCount, callback, actionsResult);
+        });
+    });
+};
+
 var calculateLeadTime = function (callback) {
     var listId = selected.listIds[selected.listIds.length - 1];
-    Trello.get("lists/" + listId + "?cards=all", function (cardsResult) {
-        var cardCount = cardsResult.cards.length;
-        data.leadTime.cards = cardCount;
-        if (cardsResult.cards.length === 0) {
-            leadTimeNoResults.show();
-        }
-
-        $progressbar.attr("aria-valuemax", cardCount);
-        $.each(cardsResult.cards, function (index, card) {
-            if (index % 1 === 0) {
-                setTimeout(function () {
-                    Trello.get("cards/" + card.id + "/actions/?filter=createCard,updateCard:idList", function (actionsResult) {
-                        updateProgress(index, cardCount);
-                        addLeadTimeData(card, actionsResult);
-
-                        if (index === cardCount - 1) {
-                            $("body").removeClass("loading");
-                            callback();
-                        }
-                    });
-                }, 5000);
-            }
-        });
+    api.get("/api/lists/" + listId, function (cardsResult) {
+        getAllCards(cardsResult, callback);
     });
 };
 
@@ -227,16 +232,6 @@ var renderLeadTime = function () {
         });
         $("#previous").click(function () {
             slideshow.previousSlide();
-        });
-    });
-};
-
-var fixDuplicateData = function () {
-    $.each(data.leadTime.series, function (index, serie) {
-        $.each(serie.data, function (index, data) {
-            if (serie.duplicates[data[0]] > 1) {
-                data[1] = Math.ceil(data[1] / serie.duplicates[data[0]]);
-            }
         });
     });
 };
@@ -296,13 +291,13 @@ var plotLeadTimeGraph = function (id, name, data) {
     });
 };
 
-var onAuthorize = function () {
+var onAuthorize = function (member) {
     selected.boardId = getQueryVariable("boardId");
     selected.listIds = getQueryVariable("listIds").split(",");
 
     ga('send', 'pageview', {
         'page': '/visualize/authorized?boardId=' + selected.boardId + "&listIds=" + getQueryVariable("listIds"),
-        'title': 'Authorized Fluxo Visualize'
+        'title': 'Authorized Fluxo Visualize for ' + member.fullName
     });
 
     $progress.toggle();
@@ -314,16 +309,18 @@ var onAuthorize = function () {
     });
 };
 
+var onAuthorizeFailed = function () {
+    ga('send', 'pageview', {
+        'page': '/not-authorized',
+        'title': 'Not authorized'
+    });
+};
+
 $(document).ready(function () {
     initDarkChartTheme();
     slideshow = new Fluxo.Visualize.SlideShow();
     dataRows = new Fluxo.Visualize.DataRowCollection();
-    Trello.authorize({
-        type: "popup",
-        name: "Fluxo",
-        expiration: "never",
-        success: onAuthorize
-    });
+    api.authorize(onAuthorize, onAuthorizeFailed);
 });
 
 var initDarkChartTheme = function () {
