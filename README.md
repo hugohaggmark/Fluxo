@@ -22,9 +22,6 @@ This account information will be stored in your client for 30 days and then you'
 If you've already connected to Fluxo before go directly to Step2.
 
 Before you can use Fluxo you need to connect to Trello using your trello account. 
-
-* Click the here link in the text "To use Fluxo you need to connect To Trello here"
-
 ![image](https://raw.githubusercontent.com/hugohaggmark/Fluxo/master/docs/welcome.png)
 * the usual connect to Trello dialog should appear, follow this as you would do when connecting to Trello 
 * remember to allow Fluxo to read your Trello information
