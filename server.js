@@ -5,7 +5,7 @@ var express = require('express'),
     fluxoConfig = require('./fluxoConfig.js'),
     NodeCache = require("node-cache"),
     fluxoCache = new NodeCache({
-        stdTTL: 120,
+        stdTTL: 300,
         checkperiod: 30
     });
 
