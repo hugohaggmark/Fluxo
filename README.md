@@ -56,14 +56,14 @@ on your Trello cards.This could look like this:
 
 ![image](https://raw.githubusercontent.com/hugohaggmark/Fluxo/master/docs/label.png)
 
-### lead time calculations explained
+### Lead time calculations explained
 In this version of Fluxo there is only support for lead time calculations. 
 The lead time for a specific card is calculated by calculating the difference between when the card is created and when the card reaches 
 the final step of your Kanban flow.
 
 All lead time data is visualized into 2 parts a "widget" and a chart.
 
-#### lead time widget
+#### Lead time widget
 This widget shows your lead time Kanban statistics as explained in the picture below:
 
 ![image](https://raw.githubusercontent.com/hugohaggmark/Fluxo/master/docs/explained.png)
