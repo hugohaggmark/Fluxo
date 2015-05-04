@@ -17,29 +17,21 @@ html
         span#fullName
       p Follow these simple steps to get Kanban style statistics for your Trello Board.
       .btn-group(data-toggle='buttons')
-        label#step1-label.btn.btn-primary.active
-          input#step1(type='radio', name='options', autocomplete='off', checked='')
-          | Step 1 Connect to Trello
+        label#step1-label.btn.btn-primary.disabled
+          input#step1(type='radio', name='options', autocomplete='off')
+          |  Step 1 Choose Board
         label#step2-label.btn.btn-primary.disabled
           input#step2(type='radio', name='options', autocomplete='off')
-          |  Step 2 Choose Board
-        label#step3-label.btn.btn-primary.disabled
-          input#step3(type='radio', name='options', autocomplete='off')
-          |  Step 3 Define Flow
+          |  Step 2 Define Flow
       p
         #step1-content
-          #loggedout.jumbotron
-            h3
-              | To use Fluxo you need to connect To Trello 
-              a#connectLink(href='# ') here
-        #step2-content
           .alert.alert-info(role='alert')
             p
               | Choose the board that you want to base your statistics on and then click the button 
               strong "Next step"
               | .
-          #step2-target
-        #step3-content
+          #step1-target
+        #step2-content
           .alert.alert-info(role='alert')
             p
               | In this step you mark the lists that make up your Kanban flow by clicking on them in the order you like. The chosen flow is shown in the area below as the lists are clicked.
@@ -53,9 +45,9 @@ html
               | When you click 
               strong Next step
               |  you'll we be redirected to the your statistics.
-          #step3-target
+          #step2-target
           h4.text-muted Chosen flow
-          #step3-flow.well
+          #step2-flow.well
         #nav.btn-group
           button#prevStep.btn.btn-success.disabled Previous step
           button#nextStep.btn.btn-success.disabled Next step
