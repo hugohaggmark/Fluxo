@@ -36,8 +36,8 @@ Pretty simple, click on the board that you're interested in getting Kanban stati
 
 ### Step 3 - Define flow
 Ok so in this step you've to define your Kanban flow. Click on the lists **in the order** you have in your Kanban flow.
-leadtime will be calculated from when a card is created to the last step in your Kanban flow. 
-Cycletime will be calculated using the other steps in your Kanban flow.
+lead time will be calculated from when a card is created to the last step in your Kanban flow. 
+Cycle time will be calculated using the other steps in your Kanban flow.
 
 ![image](https://raw.githubusercontent.com/hugohaggmark/Fluxo/master/docs/step3a.png)
 
@@ -59,25 +59,25 @@ on your Trello cards.This could look like this:
 
 ![image](https://raw.githubusercontent.com/hugohaggmark/Fluxo/master/docs/label.png)
 
-### Leadtime calculations explained
-In this version of Fluxo there is only support for leadtime calculations. 
-The leadtime for a specific card is calculated by calculating the difference between when the card is created and when the card reaches 
+### lead time calculations explained
+In this version of Fluxo there is only support for lead time calculations. 
+The lead time for a specific card is calculated by calculating the difference between when the card is created and when the card reaches 
 the final step of your Kanban flow.
 
-All leadtime data is visualized into 2 parts a "widget" and a chart.
+All lead time data is visualized into 2 parts a "widget" and a chart.
 
-#### Leadtime widget
-This widget shows your Leadtime Kanban statistics as explained in the picture below:
+#### lead time widget
+This widget shows your lead time Kanban statistics as explained in the picture below:
 
 ![image](https://raw.githubusercontent.com/hugohaggmark/Fluxo/master/docs/explained.png)
 
 #### Lead time chart
-The chart will show your leadtime over time, a 30 day moving average and a 7 day moving average.
+The chart will show your lead time over time, a 30 day moving average and a 7 day moving average.
 
 ### Throughput calculations explained
 To be implemented in future releases
 
-### Cycletime calculations explained
+### Cycle time calculations explained
 To be implemented in future releases
 
 # Aknowledgements
@@ -94,24 +94,24 @@ To be implemented in future releases
 * Thanks to Marcus Hammarberg (@marcusoftnet)
 
 # Suggestions
-* Max leadtime - what's the longest anything ever took
-* Min leadtime - what's the shortest anything ever took
+* Max lead time - what's the longest anything ever took
+* Min lead time - what's the shortest anything ever took
 * Throughput (number of items completed / unit of time, week for example)
 * Cycle time, maybe not for now, since it will be a bit messy to calcule. We have to ask the user for which cycle we're going to measure. You could also just stack it in a Culumnative Flow Diagram (CFD). That's easier to calculate but harder to read.
 
-* I think that we can do a pretty good visualization as well for leadtime like this:
-  * plot a diagram with all the leadtimes on a time-axis
+* I think that we can do a pretty good visualization as well for lead time like this:
+  * plot a diagram with all the lead times on a time-axis
   * add an average line
   * add 1 (or 3?) sigma above
   * add 1 (or 3?) sigma below
 # Suggestions
-* Max leadtime - what's the longest anything ever took
-* Min leadtime - what's the shortest anything ever took
+* Max lead time - what's the longest anything ever took
+* Min lead time - what's the shortest anything ever took
 * Throughput (number of items completed / unit of time, week for example)
 * Cycle time, maybe not for now, since it will be a bit messy to calcule. We have to ask the user for which cycle we're going to measure. You could also just stack it in a Culumnative Flow Diagram (CFD). That's easier to calculate but harder to read.
 
-* I think that we can do a pretty good visualization as well for leadtime like this:
-	* plot a diagram with all the leadtimes on a time-axis
+* I think that we can do a pretty good visualization as well for lead time like this:
+	* plot a diagram with all the lead times on a time-axis
 	* add an average line
 	* add 1 (or 3?) sigma above
 	* add 1 (or 3?) sigma below
