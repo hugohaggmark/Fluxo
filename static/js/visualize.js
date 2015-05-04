@@ -131,7 +131,7 @@ var addSeriesData = function (series, label, lastDate, leadtime) {
 
 var addToTotalsSeries = function (lastDate, leadTime) {
     if (data.leadTime.totalSeries.length === 0) {
-        var totalsSerie = createSerie("LeadTime");
+        var totalsSerie = createSerie("Lead time");
         totalsSerie.addLeadTime(lastDate, leadTime);
         data.leadTime.totalSeries.push(totalsSerie);
     } else {
@@ -269,7 +269,7 @@ var plotLeadTimeGraph = function (id, name, data) {
             }
         },
         series: [{
-            name: name,
+            name: 'Lead time',
             type: 'line',
             id: 'primary',
             data: data

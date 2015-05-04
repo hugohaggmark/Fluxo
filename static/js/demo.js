@@ -304,7 +304,7 @@ var plotLeadTimeGraph = function (id, name, data) {
             }
         },
         series: [{
-            name: name,
+            name: 'Lead time',
             type: 'line',
             id: 'primary',
             data: data
