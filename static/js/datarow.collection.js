@@ -139,10 +139,6 @@ Fluxo.Visualize.DataRowCollection = function () {
         return getStatisticsObject(getUniqueRows(dataRows), "Totals");
     };
 
-    this.series = function (name) {
-        return [];
-    };
-
     this.label = function (label) {
         var rows = findRows(dataRows, function (row) {
             return row.label === label;
@@ -153,5 +149,29 @@ Fluxo.Visualize.DataRowCollection = function () {
 
     this.labels = function () {
         return labels;
+    };
+
+    var getLeadTimeSerie = function (rows) {
+        var labelSeries = [];
+
+        for (var i = 0; i < rows.length; i++) {
+            labelSeries.push(rows[i].leadTimeSerie());
+        }
+
+        return labelSeries;
+    };
+
+    this.totalsSeries = function () {
+        var uniqueRows = getUniqueRows(dataRows);
+
+        return getLeadTimeSerie(uniqueRows);
+    };
+
+    this.leadTimeSeries = function (label) {
+        var rows = findRows(dataRows, function (row) {
+            return row.label === label;
+        });
+
+        return getLeadTimeSerie(rows);
     };
 };
