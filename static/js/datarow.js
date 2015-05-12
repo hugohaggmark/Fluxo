@@ -28,7 +28,7 @@ Fluxo.Visualize.DataRow = function (label, card, actionResults) {
     };
 
     this.leadTimeSerie = function () {
-        if (this.actionResults.length <= 1)
+        if (this.actionResults.length < 1)
             return null;
 
         var lastDate = getLastDate(),

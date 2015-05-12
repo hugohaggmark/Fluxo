@@ -151,6 +151,20 @@ Fluxo.Visualize.DataRowCollection = function () {
         return labels;
     };
 
+    function compare(a, b) {
+        if (!a && !b) {
+            return 0;
+        }
+        if (!a) {
+            return -1;
+        }
+        if (!b) {
+            return 1;
+        }
+
+        return a[0] - b[0];
+    }
+
     var getLeadTimeSerie = function (rows) {
         var labelSeries = [];
 
@@ -158,7 +172,7 @@ Fluxo.Visualize.DataRowCollection = function () {
             labelSeries.push(rows[i].leadTimeSerie());
         }
 
-        return labelSeries;
+        return labelSeries.sort(compare);
     };
 
     this.totalsSeries = function () {

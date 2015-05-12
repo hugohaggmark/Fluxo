@@ -248,8 +248,8 @@ describe("DataRowCollections", function () {
             });
 
             it("With correct points", function () {
-                expect(datarowCollection.totalsSeries()[0]).toEqual([createUtcDate(oneHour[0].date), 0.041666666666666664]);
-                expect(datarowCollection.totalsSeries()[1]).toEqual([createUtcDate(oneDay[0].date), 1]);
+                expect(datarowCollection.totalsSeries()[0]).toEqual([createUtcDate(oneDay[0].date), 1]);
+                expect(datarowCollection.totalsSeries()[1]).toEqual([createUtcDate(oneHour[0].date), 0.041666666666666664]);
                 expect(datarowCollection.totalsSeries()[2]).toEqual([createUtcDate(sevenDays[0].date), 7]);
                 expect(datarowCollection.totalsSeries()[3]).toEqual([createUtcDate(eightDays[0].date), 8]);
                 expect(datarowCollection.totalsSeries()[4]).toEqual([createUtcDate(thirtyDays[0].date), 30]);
@@ -264,8 +264,8 @@ describe("DataRowCollections", function () {
             });
 
             it("With correct points", function () {
-                expect(datarowCollection.leadTimeSeries("Bugs")[0]).toEqual([createUtcDate(oneHour[0].date), 0.041666666666666664]);
-                expect(datarowCollection.leadTimeSeries("Bugs")[1]).toEqual([createUtcDate(oneDay[0].date), 1]);
+                expect(datarowCollection.leadTimeSeries("Bugs")[0]).toEqual([createUtcDate(oneDay[0].date), 1]);
+                expect(datarowCollection.leadTimeSeries("Bugs")[1]).toEqual([createUtcDate(oneHour[0].date), 0.041666666666666664]);
             });
         });
     });

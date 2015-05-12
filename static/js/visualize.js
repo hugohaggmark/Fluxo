@@ -11,15 +11,6 @@ var selected = {
     listNames: [],
 };
 
-var data = {
-    leadTime: {
-        series: [],
-        totalSeries: []
-    },
-    cycleTime: 0,
-    throughPut: 0
-};
-
 var $progress = $("#progress");
 var $progressbar = $("#progressbar");
 
@@ -39,118 +30,12 @@ var getQueryVariable = function (variable) {
     return (false);
 };
 
-var dayDiff = function (startDate, stopDate) {
-    var timeDiff = Math.abs(stopDate.getTime() - startDate.getTime());
-    return timeDiff / (1000 * 3600 * 24);
-};
-
-var getLastDate = function (actionsResult) {
-    return new Date(actionsResult[0].date);
-};
-
-var getCreateDate = function (actionsResult) {
-    return new Date(actionsResult[actionsResult.length - 1].date);
-};
-
-var calulateLeadTimeDays = function (actionsResult) {
-    if (actionsResult.length < 1)
-        return 0;
-
-    var lastDate = getLastDate(actionsResult);
-    var createDate = getCreateDate(actionsResult);
-
-    return dayDiff(lastDate, createDate);
-};
-
-var getElementByName = function (array, name) {
-    var result = $.grep(array, function (element) {
-        return element.name === name;
-    });
-
-    return result;
-};
-
-var getExistingDate = function (array, utcDate) {
-    for (var i = 0; i < array.length; i++) {
-        if (array[i][0] === utcDate) {
-            return array[i];
-        }
-    }
-    return [];
-};
-
-var createSerie = function (name) {
-    var serie = {
-        name: name,
-        data: [],
-        duplicates: {},
-        sortData: function () {
-            this.data.sort(function (a, b) {
-                return a[0] - b[0];
-            });
-        },
-        addLeadTime: function (date, leadtime) {
-            var utcDate = Date.UTC(date.getUTCFullYear(),
-                date.getUTCMonth(),
-                date.getUTCDate(),
-                date.getUTCHours(),
-                date.getUTCMinutes(),
-                date.getUTCSeconds(),
-                0);
-
-            var exists = getExistingDate(this.data, utcDate);
-            if (exists.length === 0) {
-                this.data.push([utcDate, Math.round(leadtime)]);
-                this.sortData();
-            } else {
-                if (!this.duplicates[exists[0]]) {
-                    this.duplicates[exists[0]] = 1;
-                } else {
-                    this.duplicates[exists[0]] += 1;
-                }
-
-                exists[1] += leadtime;
-            }
-        },
-    };
-
-    return serie;
-};
-
-var addSeriesData = function (series, label, lastDate, leadtime) {
-    var result = getElementByName(series, label);
-
-    if (result.length === 0) {
-        var seriesData = createSerie(label);
-        seriesData.addLeadTime(lastDate, leadtime);
-        series.push(seriesData);
-    } else if (result.length === 1) {
-        result[0].addLeadTime(lastDate, leadtime);
-    }
-};
-
-var addToTotalsSeries = function (lastDate, leadTime) {
-    if (data.leadTime.totalSeries.length === 0) {
-        var totalsSerie = createSerie("Lead time");
-        totalsSerie.addLeadTime(lastDate, leadTime);
-        data.leadTime.totalSeries.push(totalsSerie);
-    } else {
-        data.leadTime.totalSeries[0].addLeadTime(lastDate, leadTime);
-    }
-};
-
 var addLeadTimeData = function (card, actionsResult) {
-    var leadtime = calulateLeadTimeDays(actionsResult);
-    var lastDate = getLastDate(actionsResult);
-    addToTotalsSeries(lastDate, leadtime);
-
     if (card.labels.length === 0) {
         dataRows.addDataRow("No Label", card, actionsResult);
-        addSeriesData(data.leadTime.series, "No Label", lastDate, leadtime);
     } else {
         $.each(card.labels, function (index, label) {
             dataRows.addDataRow(label.name, card, actionsResult);
-            addSeriesData(data.leadTime.series, label.name, lastDate, leadtime);
         });
     }
 };
@@ -167,7 +52,6 @@ var getAllActions = function (index, card, cardCount, callback, actionsResult) {
 
 var getAllCards = function (cardsResult, callback) {
     var cardCount = cardsResult.cards.length;
-    data.leadTime.cards = cardCount;
     if (cardCount === 0) {
         leadTimeNoResults.show();
     }
@@ -200,9 +84,7 @@ var renderLeadTime = function () {
         });
         $("#leadtime-total").html(leadTimeTotals);
         slideshow.addSlide("#leadtime-total");
-        plotLeadTimeGraph("#graph-leadtime",
-            data.leadTime.totalSeries[0].name,
-            data.leadTime.totalSeries[0].data);
+        plotLeadTimeGraph("#graph-leadtime", dataRows.totalsSeries());
     });
 
     $.get("../static/templates/leadtime-per-label.html", function (template) {
@@ -211,15 +93,13 @@ var renderLeadTime = function () {
             var dataRow = dataRows.label(label);
             var chartId = "#graph-leadtime-" + dataRow.id;
             var divId = "#leadtime-per-label-" + dataRow.id;
-            var seriesData = data.leadTime.series[i].data;
+            var seriesData = dataRows.leadTimeSeries(label);
             var leadTimePerLabel = Mustache.render(template, {
                 data: dataRow
             });
 
             $("#leadtime-per-label").append(leadTimePerLabel);
-            plotLeadTimeGraph(chartId,
-                dataRow.name,
-                seriesData);
+            plotLeadTimeGraph(chartId, seriesData);
             slideshow.addSlide(divId);
         }
 
@@ -236,7 +116,7 @@ var renderLeadTime = function () {
     });
 };
 
-var plotLeadTimeGraph = function (id, name, data) {
+var plotLeadTimeGraph = function (id, data) {
     $(id).highcharts('StockChart', {
         xAxis: {
             type: 'datetime'
