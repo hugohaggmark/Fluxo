@@ -1,4 +1,5 @@
-# Fluxo
+
+# ![image](https://raw.githubusercontent.com/hugohaggmark/Fluxo/master/static/favicon-96x96.png) Fluxo 
 Welcome to Fluxo, the Kanban dasboard for Trello boards.
 
 The application is located at [http://Fluxo.herokuapp.com](http://Fluxo.herokuapp.com)
