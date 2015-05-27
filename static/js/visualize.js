@@ -13,6 +13,9 @@ var selected = {
 
 var $progress = $("#progress");
 var $progressbar = $("#progressbar");
+var progressIndex = 0;
+var progressCount = 100;
+var progressIntervalMs = 100;
 
 var leadTimeNoResults = $("#leadtime-no-results");
 leadTimeNoResults.hide();
@@ -41,7 +44,6 @@ var addLeadTimeData = function (card) {
 };
 
 var getAllActions = function (index, card, cardCount, callback) {
-    updateProgress(index, cardCount);
     addLeadTimeData(card);
 
     if (index === cardCount - 1) {
@@ -56,7 +58,6 @@ var getAllCards = function (cardsResult, callback) {
         leadTimeNoResults.show();
     }
 
-    $progressbar.attr("aria-valuemax", cardCount);
     $.each(cardsResult, function (index, card) {
         getAllActions(index, card, cardCount, callback);
     });
@@ -64,7 +65,12 @@ var getAllCards = function (cardsResult, callback) {
 
 var calculateLeadTime = function (callback) {
     var listId = selected.listIds[selected.listIds.length - 1];
+    
+    $progressbar.attr("aria-valuemax", progressCount);
+    var progressInterval = setInterval(function(){updateProgress(progressIndex++,progressCount)}, progressIntervalMs);
+    
     api.get("/api/lists/" + listId, function (cardsResult) {
+        clearInterval(progressInterval);
         getAllCards(cardsResult, callback);
     });
 };
