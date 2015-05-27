@@ -152,7 +152,7 @@ app.get("/api/boards/:boardid/lists", require_trello_login, function (req, res) 
 });
 
 app.get("/api/lists/:listid", require_trello_login, function (req, res) {
-    doTrelloRequest("https://trello.com/1/lists/" + req.params.listid + "/?cards=all", req, res);
+    doTrelloRequest("https://trello.com/1/lists/" + req.params.listid + "/cards/?actions=updateCard:idList,createCard&filter=all&fields=name,labels,actions", req, res);
 });
 
 app.get("/api/cards/:cardid", require_trello_login, function (req, res) {

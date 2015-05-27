@@ -30,19 +30,19 @@ var getQueryVariable = function (variable) {
     return (false);
 };
 
-var addLeadTimeData = function (card, actionsResult) {
+var addLeadTimeData = function (card) {
     if (card.labels.length === 0) {
-        dataRows.addDataRow("No Label", card, actionsResult);
+        dataRows.addDataRow("No Label", card);
     } else {
         $.each(card.labels, function (index, label) {
-            dataRows.addDataRow(label.name, card, actionsResult);
+            dataRows.addDataRow(label.name, card);
         });
     }
 };
 
-var getAllActions = function (index, card, cardCount, callback, actionsResult) {
+var getAllActions = function (index, card, cardCount, callback) {
     updateProgress(index, cardCount);
-    addLeadTimeData(card, actionsResult);
+    addLeadTimeData(card);
 
     if (index === cardCount - 1) {
         $("body").removeClass("loading");
@@ -51,16 +51,14 @@ var getAllActions = function (index, card, cardCount, callback, actionsResult) {
 };
 
 var getAllCards = function (cardsResult, callback) {
-    var cardCount = cardsResult.cards.length;
+    var cardCount = cardsResult.length;
     if (cardCount === 0) {
         leadTimeNoResults.show();
     }
 
     $progressbar.attr("aria-valuemax", cardCount);
-    $.each(cardsResult.cards, function (index, card) {
-        api.get("/api/cards/" + card.id, function (actionsResult) {
-            getAllActions(index, card, cardCount, callback, actionsResult);
-        });
+    $.each(cardsResult, function (index, card) {
+        getAllActions(index, card, cardCount, callback);
     });
 };
 
