@@ -103,3 +103,8 @@ To be implemented in future releases
   * add 1 (or 3?) sigma above
   * add 1 (or 3?) sigma below
 
+# How to setup dev environment
+* run `npm install` to download all dependencies in package.json
+* set your trello api key in env. for powershell use `$env:FLUXOAPPKEY='<yourkeyhere>'`
+* set your trello secret api key in env. for powershell use `$env:FLUXOAPPSECRET='<yoursecretkeyhere>'`
+* start app with `node server.js`
