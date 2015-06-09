@@ -90,6 +90,7 @@ To be implemented in future releases
 * Thanks to Simple Moving Average Plugin for HighCharts (https://github.com/laff/technical-indicators)
 * Thanks to Bootswatch (https://bootswatch.com/)
 * Thanks to Marcus Hammarberg (@marcusoftnet)
+* Thanks to Kristoffer Vidmo (@KrisofferV)
 
 # Suggestions
 * Max lead time - what's the longest anything ever took
