@@ -97,8 +97,8 @@ Fluxo.Visualize.DataRowCollection = function () {
         return rowCount / totalCount * 100;
     };
 
-    this.addDataRow = function (label, card, actionResults) {
-        var dataRow = new Fluxo.Visualize.DataRow(label, card, actionResults);
+    this.addDataRow = function (label, card) {
+        var dataRow = new Fluxo.Visualize.DataRow(label, card);
         dataRows.push(dataRow);
 
         if (labels.indexOf(dataRow.label) === -1) {

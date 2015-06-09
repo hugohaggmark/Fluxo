@@ -3,11 +3,12 @@ describe("DataRows", function () {
 
     describe("A datarow with no actionResults", function () {
         var label = "Total";
-        var card = "Hello World Card";
-        var actionResults = [];
+        var card = {};
+        card.name = "Hello World Card";
+        card.actions = [];
 
         beforeEach(function () {
-            datarow = new Fluxo.Visualize.DataRow(label, card, actionResults);
+            datarow = new Fluxo.Visualize.DataRow(label, card);
         });
 
         it("Should be created", function () {
@@ -37,7 +38,7 @@ describe("DataRows", function () {
             id: 1,
             name: "Hello World Card"
         };
-        var actionResults = [{
+        card.actions = [{
             date: new Date("2015-01-03T12:00:00.000Z")
         }, {
             date: new Date("2015-01-02T00:00:00.000Z")
@@ -45,16 +46,16 @@ describe("DataRows", function () {
             date: new Date("2015-01-01T00:00:00.000Z")
         }];
 
-        var utcDate = Date.UTC(actionResults[0].date.getUTCFullYear(),
-            actionResults[0].date.getUTCMonth(),
-            actionResults[0].date.getUTCDate(),
-            actionResults[0].date.getUTCHours(),
-            actionResults[0].date.getUTCMinutes(),
-            actionResults[0].date.getUTCSeconds(),
+        var utcDate = Date.UTC(card.actions[0].date.getUTCFullYear(),
+            card.actions[0].date.getUTCMonth(),
+            card.actions[0].date.getUTCDate(),
+            card.actions[0].date.getUTCHours(),
+            card.actions[0].date.getUTCMinutes(),
+            card.actions[0].date.getUTCSeconds(),
             0);
 
         beforeEach(function () {
-            datarow = new Fluxo.Visualize.DataRow(label, card, actionResults);
+            datarow = new Fluxo.Visualize.DataRow(label, card);
         });
 
         it("Should have a correct leadTime", function () {
@@ -66,7 +67,7 @@ describe("DataRows", function () {
         });
 
         it("Should be exportable as csv string", function () {
-            expect(datarow.toString()).toEqual(label + ";" + card.name + ";2.5;" + actionResults[0].date.toISOString());
+            expect(datarow.toString()).toEqual(label + ";" + card.name + ";2.5;" + card.actions[0].date.toISOString());
         });
     });
 });

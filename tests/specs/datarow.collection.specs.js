@@ -104,28 +104,34 @@ describe("DataRowCollections", function () {
         beforeEach(function () {
             datarowCollection.addDataRow("Bugs", {
                 name: "1 Hour",
-                id: 1
-            }, oneHour);
+                id: 1,
+                actions: oneHour
+            });
             datarowCollection.addDataRow("Bugs", {
                 name: "1 Day",
-                id: 2
-            }, oneDay);
+                id: 2,
+                actions: oneDay
+            });
             datarowCollection.addDataRow("Maintanance", {
                 name: "7 Days",
-                id: 3
-            }, sevenDays);
+                id: 3,
+                actions: sevenDays
+            });
             datarowCollection.addDataRow("Maintanance", {
                 name: "8 Days",
-                id: 4
-            }, eightDays);
+                id: 4,
+                actions: eightDays
+            });
             datarowCollection.addDataRow("User Story", {
                 name: "30 Days",
-                id: 5
-            }, thirtyDays);
+                id: 5,
+                actions: thirtyDays
+            });
             datarowCollection.addDataRow("User Story", {
                 name: "31 Days",
-                id: 6
-            }, thirtyOneDays);
+                id: 6,
+                actions: thirtyOneDays
+            });
         });
 
         describe("Has a totals object", function () {
@@ -286,20 +292,24 @@ describe("DataRowCollections", function () {
         beforeEach(function () {
             datarowCollection.addDataRow("Bugs", {
                 name: "1 Day",
-                id: 1
-            }, oneDay);
+                id: 1,
+                actions: oneDay
+            });
             datarowCollection.addDataRow("Maintanance", {
                 name: "1 Day",
-                id: 1
-            }, oneDay);
+                id: 1,
+                actions: oneDay
+            });
             datarowCollection.addDataRow("User Story", {
                 name: "1 Day",
-                id: 1
-            }, oneDay);
+                id: 1,
+                actions: oneDay
+            });
             datarowCollection.addDataRow("Innovation", {
                 name: "1 Day",
-                id: 2
-            }, eightDays);
+                id: 2,
+                actions: eightDays
+            });
         });
 
         it("Should have totals object with 1 cards", function () {

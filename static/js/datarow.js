@@ -1,11 +1,10 @@
 var Fluxo = Fluxo || {};
 Fluxo.Visualize = Fluxo.Visualize || {};
 
-Fluxo.Visualize.DataRow = function (label, card, actionResults) {
+Fluxo.Visualize.DataRow = function (label, card) {
     'use strict';
     this.label = label;
     this.card = card;
-    this.actionResults = actionResults;
 
     var calculateLeadTime = function () {
         var timeDiff = Math.abs(getLastDate().getTime() - getCreateDate().getTime());
@@ -13,22 +12,22 @@ Fluxo.Visualize.DataRow = function (label, card, actionResults) {
     };
 
     var getLastDate = function () {
-        return new Date(actionResults[0].date);
+        return new Date(card.actions[0].date);
     };
 
     var getCreateDate = function () {
-        return new Date(actionResults[actionResults.length - 1].date);
+        return new Date(card.actions[card.actions.length - 1].date);
     };
 
     this.leadTime = function () {
-        if (this.actionResults.length <= 1)
+        if (card.actions.length <= 1)
             return 0;
 
         return calculateLeadTime();
     };
 
     this.leadTimeSerie = function () {
-        if (this.actionResults.length < 1)
+        if (card.actions.length < 1)
             return null;
 
         var lastDate = getLastDate(),
