@@ -194,7 +194,8 @@ var fakeCardResults = function () {
         fakeCards.push({
             id: i,
             name: "Card " + i,
-            labels: [label]
+            labels: [label],
+            actions: fakeActionsResult()
         });
     }
 
