@@ -107,6 +107,7 @@ Fluxo.Visualize.DataRowCollection = function () {
     };
 
     var debugPrint = function (label, rows) {
+      return
         console.log(label);
         for (var i = 0; i < rows.length; i++) {
             console.log(rows[i].toString());

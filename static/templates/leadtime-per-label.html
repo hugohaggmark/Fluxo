@@ -1,45 +1,45 @@
 <div class="row">
-    {{#data}}
-    <div id="leadtime-per-label-{{id}}">
-        <div class="panel-heading">
-            <p>Lead times (calulation made from all cards that reached the last list of your Kanban flow)</p>
-        </div>
-        <div class="col-sm-3">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">{{name}}</h3>
-                </div>
-                <div class="panel-body">
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <span class="badge">{{averageLeadTime}}</span> Average:
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge">{{leadTime}}</span> Days:
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge">{{cards}}</span> Cards:
-                        </li>
-                    </ul>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <span class="badge badge-clear">({{cardsLessThenADay}})</span><span class="badge badge-success">{{percentLessThenADay}}%</span> &lt; 1 day:
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge badge-clear">({{cardsBetweenOneAndSevenDays}})</span><span class="badge badge-info">{{percentBetweenOneAndSevenDays}}%</span> 1 - 7 days:
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge badge-clear">({{cardsBetweenEightAndThirtyDays}})</span><span class="badge badge-warning">{{percentBetweenEightAndThirtyDays}}%</span> 8 - 30 days:
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge badge-clear">({{cardsOverThirtyDays}})</span><span class="badge badge-danger">{{percentOverThirtyDays}}%</span> &gt; 30 days:
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-9" id="graph-leadtime-{{id}}">
-        </div>
+  {{#data}}
+  <div id="leadtime-per-label-{{id}}">
+    <div class="panel-heading">
+      <p>Lead times (calulation made from all cards that reached the last list of your Kanban flow)</p>
     </div>
-    {{/data}}
+    <div class="col-sm-3">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{name}}</h3>
+        </div>
+        <div class="panel-body">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <span class="badge">{{averageLeadTime}}</span> Average:
+            </li>
+            <li class="list-group-item">
+              <span class="badge">{{leadTime}}</span> Days:
+            </li>
+            <li class="list-group-item">
+              <span class="badge">{{cards}}</span> Cards:
+            </li>
+          </ul>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <span class="badge badge-clear">({{cardsLessThenADay}})</span><span class="badge badge-success">{{percentLessThenADay}}%</span> &lt; 1 day:
+            </li>
+            <li class="list-group-item">
+              <span class="badge badge-clear">({{cardsBetweenOneAndSevenDays}})</span><span class="badge badge-info">{{percentBetweenOneAndSevenDays}}%</span> 1 - 7 days:
+            </li>
+            <li class="list-group-item">
+              <span class="badge badge-clear">({{cardsBetweenEightAndThirtyDays}})</span><span class="badge badge-warning">{{percentBetweenEightAndThirtyDays}}%</span> 8 - 30 days:
+            </li>
+            <li class="list-group-item">
+              <span class="badge badge-clear">({{cardsOverThirtyDays}})</span><span class="badge badge-danger">{{percentOverThirtyDays}}%</span> &gt; 30 days:
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-9" id="graph-leadtime-{{id}}" style="height: 400px; min-width: 310px;">
+    </div>
+  </div>
+  {{/data}}
 </div>

@@ -65,10 +65,10 @@ var getAllCards = function (cardsResult, callback) {
 
 var calculateLeadTime = function (callback) {
     var listId = selected.listIds[selected.listIds.length - 1];
-    
+
     $progressbar.attr("aria-valuemax", progressCount);
     var progressInterval = setInterval(function(){updateProgress(progressIndex++,progressCount)}, progressIntervalMs);
-    
+
     api.get("/api/lists/" + listId, function (cardsResult) {
         clearInterval(progressInterval);
         getAllCards(cardsResult, callback);
@@ -121,6 +121,8 @@ var renderLeadTime = function () {
 };
 
 var plotLeadTimeGraph = function (id, data) {
+  console.log(id);
+  //Highcharts.stockChart(id,
     $(id).highcharts('StockChart', {
         xAxis: {
             type: 'datetime'
